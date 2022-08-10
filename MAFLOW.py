@@ -13,7 +13,7 @@ def traverseInside(path):
             traverseInside(path+'\\'+i)
         else:
             if 'nok' not in i.lower() and 'error' not in i.lower():
-                t = os.stat(path+'\\'+i)[8] # [8] - creation timestamp stored here
+                t = os.stat(path+'\\'+i)[8]  # [8] - creation timestamp stored here
                 if dzis.timestamp().__round__() - t > 15768000:
                     try:
                         os.remove(path+'\\'+i)
@@ -96,7 +96,7 @@ def nameCreation(data):
 
 # Path to network disk where images are stored
 #path = "C:\\PRACA\\Python\\MAFLOW\\TEST\\"
-path = 'K:\\'
+path = 'Z:\\'
 
 logName = nameCreation(datetime.datetime.today())
 
