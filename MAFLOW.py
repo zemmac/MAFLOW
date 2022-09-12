@@ -96,7 +96,8 @@ def nameCreation(data):
 
 # Path to network disk where images are stored
 #path = "C:\\PRACA\\Python\\MAFLOW\\TEST\\"
-path = 'Z:\\'
+#path = 'C:\PRACA\Python\MAFLOW\Test_MEX\Wszystkie\Wszystkie\\'
+path = 'K:\\'  # MAFLOW path to network disc
 
 logName = nameCreation(datetime.datetime.today())
 
@@ -125,6 +126,10 @@ for i in listaPlikow:
     if '.bmp' in i.lower() or '.jpg' in i.lower():
         licznikPlikow += 1
         znakCzasu = os.stat(sciezkaPliku)[8]
+        dummy_znakCzasu = os.path.getctime(sciezkaPliku)
+
+        #dataUtworzenia = datetime.datetime.fromtimestamp(dummy_znakCzasu)
+
         dataUtworzenia = datetime.datetime.fromtimestamp(znakCzasu)
 
         # According to file creation date - create folder name
@@ -132,15 +137,22 @@ for i in listaPlikow:
 
         # Get the shift number according to creation hour
         # If a file was created during III shift after midnight - subtract one day
-        if dataUtworzenia.hour < 6:
+        if dataUtworzenia.hour < 6 or (dataUtworzenia.hour == 6 and dataUtworzenia.minute < 30):
             znakCzasu = os.stat(sciezkaPliku)[8] - 86400
             dataUtworzenia = datetime.datetime.fromtimestamp(znakCzasu)
             zmiana = '\\III'
-        elif 6 <= dataUtworzenia.hour < 14:
+        elif ((dataUtworzenia.hour >= 7 or
+                (dataUtworzenia.hour == 6 and dataUtworzenia.minute > 30)) and
+                (dataUtworzenia.hour < 14 or
+                 (dataUtworzenia.hour == 14 and dataUtworzenia.minute < 30))):  #6 <= dataUtworzenia.hour < 14:
             zmiana = '\\I'
-        elif 14 <= dataUtworzenia.hour < 22:
+        elif (dataUtworzenia.hour >= 15 or
+                (dataUtworzenia.hour == 14 and dataUtworzenia.minute > 30)) and \
+                (dataUtworzenia.hour < 22 or
+                 (dataUtworzenia.hour == 22 and dataUtworzenia.minute < 30)):  #14 <= dataUtworzenia.hour < 22:
             zmiana = '\\II'
-        elif dataUtworzenia.hour >= 22:
+        elif (dataUtworzenia.hour >= 23 or
+                (dataUtworzenia.hour == 22 and dataUtworzenia.minute > 30)):
             zmiana = '\\III'
         else:
             zmiana = ''
